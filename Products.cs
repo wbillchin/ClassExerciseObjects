@@ -99,19 +99,39 @@ namespace ClassExerciseObjects
     {
         static void doSomething()
         {
+
             double priceCutOff = 99.5;
             // Create instances of each product type
-            Book book = new Book("The Great Gatsby", 15.99m, 10, "F. Scott Fitzgerald", "1234567890");
+            Book gatsbyBook = new Book("The Great Gatsby", 15.99m, 10, "F. Scott Fitzgerald", "1234567890");
             Clothing shirt = new Clothing("T-Shirt", 19.99m, 20, "M", "Cotton");
 
-            book.Price = 99.99m;
+
+            List<Product> shoppingCart = new List<Product>()
+            {
+                new Book("Ender's Game", 29.99m, 35, "Orson Scott Card", "0-312-93208-1"),
+                new Book("Ender's Shadow", 24.99m, 30, "Orson Scott Card", "0-312-86860-X")
+            };
+
+            shoppingCart.Add(gatsbyBook);
+            shoppingCart.Add(shirt);
+            shoppingCart.Remove(gatsbyBook);
+
+            int stockCount = 0;
+            foreach( Product aProduct in shoppingCart )
+            {
+                stockCount += aProduct.QuantityInStock;
+            }
+
+            Console.WriteLine("average stocked level is " + (double)stockCount/(double)shoppingCart.Count);
+
+            gatsbyBook.Price = 99.99m;
             shirt.UpdateStock(50);
 
-            Console.WriteLine("book publisher is " + book.Publisher());
+            Console.WriteLine("book publisher is " + gatsbyBook.Publisher());
 
             int quantityDesired = 20;
 
-            if ( book.HasStock(quantityDesired) == true )
+            if (gatsbyBook.HasStock(quantityDesired) == true )
             {
 
                 DateTime purchaseDateTime = DateTime.Now;
@@ -123,18 +143,18 @@ namespace ClassExerciseObjects
                     + (purchaseDateTime.Year - membershipJoinedYear));
 
                 // been purchased
-                book.UpdateStock(-quantityDesired);
+                gatsbyBook.UpdateStock(-quantityDesired);
             }
 
             // Display details of each product
-            book.DisplayDetails();
-            Console.WriteLine(book.IsInStock() ? "In Stock" : "Out of Stock");
+            gatsbyBook.DisplayDetails();
+            Console.WriteLine(gatsbyBook.IsInStock() ? "In Stock" : "Out of Stock");
 
             shirt.DisplayDetails();
             Console.WriteLine(shirt.IsInStock() ? "In Stock" : "Out of Stock");
 
             // Update stock for one product
-            book.UpdateStock(5); // Adds 5 more books to the stock
+            gatsbyBook.UpdateStock(5); // Adds 5 more books to the stock
         }
     }
 }
